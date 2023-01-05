@@ -24,48 +24,55 @@ function buildTable(data) {
     });
 };
 
+// Create an empty filters object to store the input field values
+let filters = {};
+
 function updateFilters() {
-    // Create an empty filters object to store the input field values
-    let filters = {};
+
+    let changedElement = d3.select(this);
+    // 4b. Save the value that was changed as a variable.
+    let elementValue = changedElement.property("value");
+    // 4c. Save the id of the filter that was changed as a variable.
+    let filterId = changedElement.attr("id");
 
     // Check if a value was entered by the user
     if (elementValue) {
     // If a value was entered, add the element's id as a property and the value that was changed to the filters object
-    filters[elementId] = elementValue;
+    filters[filterId] = elementValue;
     } else {
     // If a value was not entered, clear the element id from the filters object
-    delete filters[elementId];
+    delete filters[filterId];
     } 
 
-    // Find the data stored in the HTML tags, then store the value in a variable.
-    let date = d3.select("#datetime").property("value");
-    let city = d3.select("#city").property("value");
-    let state = d3.select("#state").property("value");
-    let country = d3.select("#country").property("value");
-    let shape = d3.select("#shape").property("value");
+    // // Find the data stored in the HTML tags, then store the value in a variable.
+    // let date = d3.select("#datetime").property("value");
+    // let city = d3.select("#city").property("value");
+    // let state = d3.select("#state").property("value");
+    // let country = d3.select("#country").property("value");
+    // let shape = d3.select("#shape").property("value");
 
     // Add the input field values to the filters object if they are not empty
-    if (date) {
-        filters.datetime = date;
-    }
-    if (city) {
-        filters.city = city;
-    }
-    if (state) {
-        filters.state = state;
-    }
-    if (country) {
-        filters.country = country;
-    }
-    if (shape) {
-        filters.shape = shape;
-    }
+    // if (date) {
+    //     filters.datetime = date;
+    // }
+    // if (city) {
+    //     filters.city = city;
+    // }
+    // if (state) {
+    //     filters.state = state;
+    // }
+    // if (country) {
+    //     filters.country = country;
+    // }
+    // if (shape) {
+    //     filters.shape = shape;
+    // }
 
     // Filter the data using the input field values
-    filterTable(filters);
+    filterTable();
 }
 
-function filterTable(filters) {
+function filterTable() {
     // Set the filter to select data from the original data set. 
     let filteredData = tableData;
 
@@ -79,16 +86,7 @@ function filterTable(filters) {
 }
 
 // Detect a change in the input elements and apply the updateFilters function.
-d3.selectAll("input").on("change", function() {
-    // Create a variable that saves the element that was changed
-    let changedElement = d3.select(this);
-
-    // Create a variable that saves the value of the changed element's "value" property
-    let elementValue = changedElement.property("value");
-
-    // Create a variable that saves the attribute of the changed element's "id"
-    let elementId = changedElement.attr("id");
-  });
+d3.selectAll("input").on("change", updateFilters);
   
 
 // Build the table when the page loads.
